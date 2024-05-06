@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Nhập số lượng proxy IPv4 muốn tạo
+read -p "Nhập số lượng proxy IPv4 muốn tạo: " num_proxies
+
+# Tạo proxy IPv4 từ địa chỉ IPv4 của VPS
+vps_ipv4=$(curl -s https://api.ipify.org)
+proxy_port=8080 # Có thể thay đổi cổng proxy tại đây
+
+# Tạo danh sách proxy IPv4 vào file txt
+for ((i=1; i<=$num_proxies; i++))
+do
+    echo "$vps_ipv4:$proxy_port" >> proxy_list.txt
+done
+
+# Gửi file proxy_list.txt đến bot Telegram
+telegram_bot_token="6993056063:AAFPwvXwIaysQ4_LbBalYWz77gXwVGk8Jrc"
+chat_id="5257679444"
+
+curl -F chat_id="$chat_id" -F document=@"proxy_list.txt" https://api.telegram.org/bot$telegram_bot_token/sendDocument
+
+echo "Đã gửi danh sách proxy IPv4 đến bot Telegram"
