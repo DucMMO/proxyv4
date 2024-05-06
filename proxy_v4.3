@@ -10,6 +10,7 @@ proxy_port=8080 # Có thể thay đổi cổng proxy tại đây
 # Tạo danh sách proxy IPv4 vào file txt
 for ((i=1; i<=$num_proxies; i++))
 do
+    proxy_port=$((vps_port + i + 1))
     echo "$vps_ipv4:$proxy_port" >> proxy_list.txt
 done
 
