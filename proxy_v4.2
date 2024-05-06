@@ -1,18 +1,10 @@
 import socket
 import threading
-from telegram import Bot
 from datetime import datetime
-
-# Cài đặt thư viện python-telegram-bot nếu chưa có
-try:
-    from telegram import Bot
-except ImportError:
-    print("Bạn cần cài đặt thư viện python-telegram-bot trước.")
-    print("Sử dụng lệnh: pip install python-telegram-bot")
-    exit()
+import requests
 
 # Thay thế 'TOKEN_BOT' bằng token của bot Telegram của bạn
-bot = Bot(token='6993056063:AAFPwvXwIaysQ4_LbBalYWz77gXwVGk8Jrc')
+TOKEN_BOT = '6993056063:AAFPwvXwIaysQ4_LbBalYWz77gXwVGk8Jrc'
 
 def handle_client(client_socket, remote_host, remote_port):
     # Hiển thị dữ liệu được gửi từ client
@@ -64,8 +56,11 @@ def save_proxy_list(proxy_list):
     return file_name
 
 def send_file_to_telegram(file_name):
-    # Gửi tệp đính kèm tới bot Telegram
-    bot.send_document(chat_id='5257679444', document=open(file_name, 'rb'))
+    url = f"https://api.telegram.org/bot{TOKEN_BOT}/sendDocument"
+    files = {'document': open(file_name, 'rb')}
+    data = {'chat_id': '5257679444'}
+    response = requests.post(url, files=files, data=data)
+    print(response.json())
 
 def main():
     # Nhập số lượng proxy muốn tạo
