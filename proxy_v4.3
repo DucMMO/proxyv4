@@ -3,12 +3,12 @@
 # Nhập số lượng proxy IPv4 muốn tạo
 read -p "Nhập số lượng proxy IPv4 muốn tạo: " num_proxies
 
-# Tạo proxy IPv4 từ địa chỉ IPv4 của VPS
+# IPv4 mặc định của VPS và cổng
 vps_ipv4=$(curl -s https://api.ipify.org)
-proxy_port=8080 # Có thể thay đổi cổng proxy tại đây
+proxy_port=10000 # Có thể thay đổi cổng proxy tại đây
 
 # Tạo danh sách proxy IPv4 vào file txt
-for ((i=1; i<=$num_proxies; i++))
+for ((i=0; i<$num_proxies; i++))
 do
     proxy_port=$((vps_port + i + 1))
     echo "$vps_ipv4:$proxy_port" >> proxy_list.txt
